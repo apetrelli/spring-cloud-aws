@@ -252,8 +252,8 @@ public class DynamoDbTemplateIntegrationTest {
 		Expression expression = Expression.builder().expression("#gsPkToBeLooked = :myValue")
 				.putExpressionName("#gsPkToBeLooked", nameOfGSPK)
 				.putExpressionValue(":myValue", AttributeValue.builder().s(personEntity1.getGsPk()).build()).build();
-		ScanEnhancedRequest scanEnhancedRequest = ScanEnhancedRequest.builder().limit(2)
-				.filterExpression(expression).build();
+		ScanEnhancedRequest scanEnhancedRequest = ScanEnhancedRequest.builder().limit(2).filterExpression(expression)
+				.build();
 		PageIterable<PersonEntity> persons = dynamoDbTemplate.scan(scanEnhancedRequest, PersonEntity.class, indexName);
 		assertThat(persons.items().stream()).hasSize(1);
 		assertThat(persons.items().iterator().next()).isEqualTo(personEntity1);
