@@ -15,6 +15,8 @@
  */
 package io.awspring.cloud.sqs.operations;
 
+import java.util.stream.Collectors;
+
 import org.springframework.lang.Nullable;
 
 /**
@@ -46,7 +48,7 @@ public class SendBatchOperationFailedException extends MessagingOperationFailedE
 	 */
 	public SendBatchOperationFailedException(String msg, String endpoint, SendResult.Batch<?> sendBatchResult,
 			@Nullable Throwable cause) {
-		super(msg, endpoint, sendBatchResult.failed().stream().map(SendResult.Failed::message).toList(), cause);
+		super(msg, endpoint, sendBatchResult.failed().stream().map(SendResult.Failed::message).collect(Collectors.toList()), cause);
 		this.sendBatchResult = sendBatchResult;
 	}
 

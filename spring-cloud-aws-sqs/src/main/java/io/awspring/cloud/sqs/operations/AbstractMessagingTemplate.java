@@ -28,6 +28,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -128,7 +129,7 @@ public abstract class AbstractMessagingTemplate<S> implements MessagingOperation
 
 	@SuppressWarnings("unchecked")
 	protected <T> List<Message<T>> castFromCollection(Collection<Message<?>> msgs) {
-		return msgs.stream().map(msg -> (Message<T>) msg).toList();
+		return msgs.stream().map(msg -> (Message<T>) msg).collect(Collectors.toList());
 	}
 
 	protected CompletableFuture<Optional<Message<?>>> receiveAsync(@Nullable String endpoint,
@@ -157,6 +158,9 @@ public abstract class AbstractMessagingTemplate<S> implements MessagingOperation
 		Duration pollTimeoutToUse = getOrDefault(pollTimeout, this.defaultPollTimeout, "pollTimeout");
 		Integer maxNumberOfMessagesToUse = getOrDefault(maxNumberOfMessages, this.defaultMaxNumberOfMessages,
 				"defaultMaxNumberOfMessages");
+		Function<Throwable, CompletableFuture<Message<?>>> f = t -> CompletableFuture.failedFuture(new MessagingOperationFailedException(
+                "Message receive operation failed for endpoint %s".formatted(endpointToUse), endpointToUse,
+                t instanceof CompletionException ? t.getCause() : t));
 		return doReceiveAsync(endpointToUse, pollTimeoutToUse, maxNumberOfMessagesToUse, headers)
 				.thenApply(messages -> convertReceivedMessages(endpointToUse, payloadClass, messages, headers))
 				.thenCompose(messages -> handleAcknowledgement(endpointToUse, messages))

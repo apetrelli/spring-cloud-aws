@@ -51,8 +51,8 @@ public class PollingAwsPropertySourceChangeDetector<T extends AwsPropertySource<
 	@Override
 	public void afterPropertiesSet() {
 		log.info("Polling configurations change detector activated");
-		PeriodicTrigger trigger = new PeriodicTrigger(properties.getPeriod());
-		trigger.setInitialDelay(properties.getPeriod());
+		PeriodicTrigger trigger = new PeriodicTrigger(properties.getPeriod().toMillis());
+		trigger.setInitialDelay(properties.getPeriod().toMillis());
 		taskExecutor.schedule(this::executeCycle, trigger);
 	}
 

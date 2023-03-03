@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.cloud</groupId>
 		<artifactId>spring-cloud-build</artifactId>
-		<version>4.0.1</version>
+		<version>3.1.6</version>
 		<relativePath/><!-- lookup parent from repository -->
 	</parent>
 
@@ -30,6 +30,7 @@
 		<spotless.version>2.31.0</spotless.version>
 		<jacoco.version>0.8.8</jacoco.version>
 		<maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
+		<spring-boot.version>2.7.9</spring-boot.version>
 	</properties>
 
 	<modules>
@@ -66,6 +67,13 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 		</dependencies>
 	</dependencyManagement>
 

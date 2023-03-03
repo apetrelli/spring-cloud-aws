@@ -142,8 +142,8 @@ public abstract class AbstractPipelineMessageListenerContainer<T, O extends Cont
 
 	private void verifyThreadType() {
 		if (!MessageExecutionThread.class.isAssignableFrom(Thread.currentThread().getClass())) {
-			throw new UnsupportedThreadFactoryException("Custom TaskExecutors must use a %s."
-				.formatted(MessageExecutionThreadFactory.class.getSimpleName()));
+			throw new UnsupportedThreadFactoryException(String.format("Custom TaskExecutors must use a %s.",
+				MessageExecutionThreadFactory.class.getSimpleName()));
 		}
 	}
 	// @formatter:on
